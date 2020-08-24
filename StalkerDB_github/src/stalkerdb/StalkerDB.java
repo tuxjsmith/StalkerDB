@@ -245,11 +245,6 @@ public class StalkerDB extends javax.swing.JFrame {
 
         jTabbedPane1.setDoubleBuffered(true);
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(483, 0));
-        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jTabbedPane1StateChanged(evt);
-            }
-        });
 
         jPanel1.setLayout(new java.awt.BorderLayout(0, 5));
 
@@ -1505,18 +1500,9 @@ public class StalkerDB extends javax.swing.JFrame {
     }//GEN-LAST:event_copyImage_imageItemActionPerformed
     //</editor-fold>
     
-    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
-        
-//        if (jTabbedPane1.getSelectedIndex() == 4
-//                && globalNotesText.getText().isBlank()) {
-//            
-//            new GetGlobalNotes().start();
-//        }
-    }//GEN-LAST:event_jTabbedPane1StateChanged
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         
-        System.out.println ("Window opened");
+//        System.out.println ("Window opened");
         
         if (!LOADED.isActive ()) {
             
@@ -1692,10 +1678,11 @@ public class StalkerDB extends javax.swing.JFrame {
                  */
                 if ( STATE.EDIT_MODE.isActive () ) {
 
-                    PHP_URL_S = "http://localhost/PhpProject1/updateEntry.php";
+                    PHP_URL_S = "http://localhost/logFarm/PHP/StalkerDbPhp/updateEntry.php";
+//                    PHP_URL_S = "http://localhost/PhpProject1/updateEntry.php";
                 } else {
 
-                    PHP_URL_S = "http://localhost/PhpProject1/addNewEntry.php";
+                    PHP_URL_S = "http://localhost/logFarm/PHP/StalkerDbPhp/addNewEntry.php";
                 }
 
                 final Map<String, String> ARGUMENTS = new HashMap<> ();
@@ -1812,7 +1799,7 @@ public class StalkerDB extends javax.swing.JFrame {
         @Override
         public void run () {
             
-            final String PHP_URL_S = "http://localhost/PhpProject1/getImages.php";
+            final String PHP_URL_S = "http://localhost/logFarm/PHP/StalkerDbPhp/getImages.php";
             final Map<String, String> ARGUMENTS = new HashMap<> ();
             ARGUMENTS.put ( "reg", SEARCH_DB_RETURN_VALUES_HM.get ( RECORD_ID ).split ( "reg:" )[ 1 ].split ( ":~:" )[ 0 ] );
 
@@ -1834,7 +1821,7 @@ public class StalkerDB extends javax.swing.JFrame {
         @Override
         public void run() {
             
-            final String PHP_URL_S = "http://localhost/PhpProject1/getGlobalNotes.php";
+            final String PHP_URL_S = "http://localhost/logFarm/PHP/StalkerDbPhp/getGlobalNotes.php";
 
             final Map<String, String> ARGUMENTS = new HashMap<>();
 
@@ -1857,7 +1844,7 @@ public class StalkerDB extends javax.swing.JFrame {
         @Override
         public void run () {
 
-            final String PHP_URL_S = "http://localhost/PhpProject1/search.php";
+            final String PHP_URL_S = "http://localhost/logFarm/PHP/StalkerDbPhp/search.php";
 
             final Map<String, String> ARGUMENTS = new HashMap<> ();
 
@@ -1925,7 +1912,7 @@ public class StalkerDB extends javax.swing.JFrame {
              */
             if (STATE.EDIT_MODE.isActive()) {
 
-                final String PHP_URL_S = "http://localhost/PhpProject1/delete.php";
+                final String PHP_URL_S = "http://localhost/logFarm/PHP/StalkerDbPhp/delete.php";
 
                 Map<String, String> args = new HashMap<>();
 
@@ -1961,7 +1948,7 @@ public class StalkerDB extends javax.swing.JFrame {
             
             setCursor (new Cursor (Cursor.WAIT_CURSOR));
             
-            final String PHP_URL_S = "http://localhost/PhpProject1/updateGlobalNotes.php";
+            final String PHP_URL_S = "http://localhost/logFarm/PHP/StalkerDbPhp/updateGlobalNotes.php";
                 
             Map<String, String> ARGUMENTS = new HashMap<>();
 

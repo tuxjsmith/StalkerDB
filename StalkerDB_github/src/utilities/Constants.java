@@ -46,7 +46,7 @@ import static utilities.Constants.RETURN_OBJECT.VALIDATION_RETURN_OBJECT;
  */
 public interface Constants {
 
-    String VERSION = "0.80 (DVLA MISSING)";
+    String VERSION = "0.80 (TODO: DVLA)";
     
     /*
      * Used by search and edit.
@@ -55,7 +55,7 @@ public interface Constants {
             SAVE_DB_RETURN_VALUES_HM = new ConcurrentHashMap(),
             SEARCH_DB_RETURN_VALUES_HM = new ConcurrentHashMap();
 
-    ArrayList<String> IMAGES_SEARCH_DB_RETURN_VALUES_AL = new ArrayList<String> ();
+    ArrayList<String> IMAGES_SEARCH_DB_RETURN_VALUES_AL = new ArrayList<> ();
     
     enum GLOBAL_NOTES {
         
@@ -308,10 +308,10 @@ public interface Constants {
                     }
 
                     StalkerDB.getDeleteBtn ().setEnabled (Boolean.FALSE);
-                    StalkerDB.getSaveBtn().setEnabled (Boolean.FALSE);
+                    StalkerDB.getSaveBtn().setEnabled (Boolean.TRUE);
                     StalkerDB.getFrontEditBtn().setEnabled (Boolean.FALSE);
-                    StalkerDB.getUploadBtn().setEnabled(Boolean.FALSE);
-                    StalkerDB.getTodayBtn().setEnabled(Boolean.FALSE);
+                    StalkerDB.getUploadBtn().setEnabled(Boolean.TRUE);
+                    StalkerDB.getTodayBtn().setEnabled(Boolean.TRUE);
 
                     break;
             }
