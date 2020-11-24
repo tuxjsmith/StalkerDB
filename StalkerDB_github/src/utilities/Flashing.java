@@ -41,6 +41,11 @@ public class Flashing {
     public Flashing () {
     } 
     
+    /**
+     * 
+     * @param field JLabel
+     */
+    //<editor-fold defaultstate="collapsed" desc="startFlashing">
     public static void startFlashing (JLabel field) {
         
         flashTimer.cancel();
@@ -49,7 +54,9 @@ public class Flashing {
         
         flashTimer.schedule(new FlashTimerTask (field), 500, 500);
     }
+    //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="static class FlashTimerTask extends TimerTask">
     public static class FlashTimerTask extends TimerTask {
     
         private Integer counter = 0;
@@ -86,4 +93,5 @@ public class Flashing {
             counter++;
         }
     }
+    //</editor-fold>
 }

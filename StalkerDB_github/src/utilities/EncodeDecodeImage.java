@@ -49,6 +49,11 @@ public class EncodeDecodeImage {
     public EncodeDecodeImage () {  
     }
     
+    /**
+     * 
+     * @param absolutePath - String
+     */
+    //<editor-fold defaultstate="collapsed" desc="static encodeFile">
     public static void encodeFile (String absolutePath) {
 
         try {
@@ -67,7 +72,13 @@ public class EncodeDecodeImage {
             System.err.println ( ex.getMessage() );
         }
     }
-    
+    //</editor-fold>
+   
+    /**
+     * 
+     * @param s - String
+     */
+    //<editor-fold defaultstate="collapsed" desc="static setMimeString">
     public static void setMimeString (String s) {
     
         /*
@@ -115,17 +126,35 @@ public class EncodeDecodeImage {
         
         mimeString = s;
     }
+    //</editor-fold>
     
+    /**
+     * 
+     * @return String
+     */
+    //<editor-fold defaultstate="collapsed" desc="static getMimeString">
     public static String getMimeString () {
         
         return (mimeString == null) ? "no image" : mimeString;
     }
-    
+    //</editor-fold>
+ 
+    /**
+     * 
+     * @return BufferedImage
+     */
+    //<editor-fold defaultstate="collapsed" desc="static getBufferedImage">
     public static BufferedImage getBufferedImage () {
         
         return bi;
     }
+    //</editor-fold>
     
+    /**
+     * 
+     * @return BufferedImage
+     */
+    //<editor-fold defaultstate="collapsed" desc="static getBufferedImageFromBytes">
     public static BufferedImage getBufferedImageFromBytes () {
 
         try {
@@ -145,12 +174,24 @@ public class EncodeDecodeImage {
 
         return bi;
     }
+    //</editor-fold>
     
+    /**
+     * 
+     * @return byte[]
+     */
+    //<editor-fold defaultstate="collapsed" desc="static getDecodedBytes">
     private static byte[] getDecodedBytes () {
         
         return Base64.getUrlDecoder().decode(EncodeDecodeImage.getMimeString());
     }
+    //</editor-fold>
     
+    /**
+     * 
+     * @param path - String
+     */
+    //<editor-fold defaultstate="collapsed" desc="static toImage">
     public static void toImage ( String path ) {
 
         File file = new File( path );
@@ -165,9 +206,15 @@ public class EncodeDecodeImage {
             System.err.println (e.getMessage ());
         }
     }
+    //</editor-fold>
     
+    /**
+     * Reset mimeString to a default value.
+     */
+    //<editor-fold defaultstate="collapsed" desc="resetMimeString">
     public static void resetMimeString () {
         
         mimeString = NO_IMAGE;
     }
+    //</editor-fold>
 }

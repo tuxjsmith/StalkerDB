@@ -46,7 +46,7 @@ import static utilities.Constants.RETURN_OBJECT.VALIDATION_RETURN_OBJECT;
  */
 public interface Constants {
 
-    String VERSION = "0.80 (TODO: DVLA)";
+    String VERSION = "0.81 (TODO: DVLA)";
     
     /*
      * Used by search and edit.
@@ -57,6 +57,7 @@ public interface Constants {
 
     ArrayList<String> IMAGES_SEARCH_DB_RETURN_VALUES_AL = new ArrayList<> ();
     
+    //<editor-fold defaultstate="collapsed" desc="enum GLOBAL_NOTES">
     enum GLOBAL_NOTES {
         
         LOADED (Boolean.FALSE);
@@ -81,7 +82,9 @@ public interface Constants {
             }
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="enum RETURN_TYPES">
     enum RETURN_TYPES {
         
         SEARCH,
@@ -89,7 +92,9 @@ public interface Constants {
         IMAGES,
         DEFAULT;
     }
+    //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="enum HTTP_METHODS">
     enum HTTP_METHODS {
 
         GET ("GET"),
@@ -112,11 +117,13 @@ public interface Constants {
             return FOO;
         }
     }
+    //</editor-fold>
 
     /*
      * TODO: message: make message and errorMessage lists.
      * They can be looped.
      */
+    //<editor-fold defaultstate="collapsed" desc="enum RETURN_OBJECT">
     enum RETURN_OBJECT {
 
         VALIDATION_RETURN_OBJECT(),
@@ -172,7 +179,9 @@ public interface Constants {
             return message.toString();
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="enum STATE">
     enum STATE {
 
         NEW_ENTRY_MODE (
@@ -183,6 +192,10 @@ public interface Constants {
             Boolean.FALSE,
             "Edit Mode"),
 
+        READ_ONLY (
+            Boolean.FALSE,
+            "Read Only"),
+        
         CLEARED (
             Boolean.FALSE,
             "Cleared, New Entry Mode"),
@@ -194,7 +207,7 @@ public interface Constants {
         DELETED (
             Boolean.FALSE,
             "Deleted");
-
+        
         private Boolean active;
         private final String MESSAGE;
 
@@ -231,6 +244,26 @@ public interface Constants {
 
             switch (this) {
 
+                case READ_ONLY:
+                    
+//                    for (VALIDATION field : VALIDATION.values()) {
+//
+//                        field.getSwingField().setEnabled (Boolean.FALSE);
+//                    }
+                    
+                    for ( VALIDATION validate : VALIDATION.values () ) {
+
+                        validate.resetValid ();
+                    }
+
+                    StalkerDB.getDeleteBtn ().setEnabled (Boolean.TRUE);
+                    StalkerDB.getSaveBtn().setEnabled (Boolean.FALSE);
+                    StalkerDB.getFrontEditBtn().setEnabled (Boolean.TRUE);
+                    StalkerDB.getUploadBtn().setEnabled(Boolean.FALSE);
+                    StalkerDB.getTodayBtn().setEnabled(Boolean.FALSE);
+                    
+                    break;
+                
                 case SAVED:
 
                     for (VALIDATION field : VALIDATION.values()) {
@@ -243,6 +276,7 @@ public interface Constants {
                     StalkerDB.getFrontEditBtn().setEnabled (Boolean.TRUE);
                     StalkerDB.getUploadBtn().setEnabled(Boolean.FALSE);
                     StalkerDB.getTodayBtn().setEnabled(Boolean.FALSE);
+                    StalkerDB.getReadOnlyBtn ().setEnabled (Boolean.TRUE);
 
                     break;
 
@@ -258,6 +292,7 @@ public interface Constants {
                     StalkerDB.getFrontEditBtn().setEnabled (Boolean.FALSE);
                     StalkerDB.getUploadBtn().setEnabled(Boolean.TRUE);
                     StalkerDB.getTodayBtn().setEnabled(Boolean.TRUE);
+                    StalkerDB.getReadOnlyBtn ().setEnabled(Boolean.TRUE);
 
                     StalkerDB.getDuplicatesLbl().setText("Duplicates");
 
@@ -269,14 +304,25 @@ public interface Constants {
                      * Why don't we want to do this ? (commented out)
                     */
 //                    EDIT_ID_RETURN_OBJECT.setMessage ("0");
+                    
+                    EDIT_ID_RETURN_OBJECT.setMessage ("0");
+
+                    StalkerDB.getIdLbl().setText("ID");
+                    StalkerDB.getDuplicatesLbl().setText("Duplicates");
+
+                    for (VALIDATION field : VALIDATION.values()) {
+
+                        field.getSwingField().setEnabled(Boolean.TRUE);
+                    }
 
                     StalkerDB.getDeleteBtn ().setEnabled (Boolean.FALSE);
-                    StalkerDB.getSaveBtn().setEnabled (Boolean.FALSE);
+                    StalkerDB.getSaveBtn().setEnabled (Boolean.TRUE);
                     StalkerDB.getFrontEditBtn().setEnabled (Boolean.FALSE);
-                    StalkerDB.getUploadBtn().setEnabled(Boolean.FALSE);
-                    StalkerDB.getTodayBtn().setEnabled(Boolean.FALSE);
+                    StalkerDB.getUploadBtn().setEnabled(Boolean.TRUE);
+                    StalkerDB.getTodayBtn().setEnabled(Boolean.TRUE);
+                    StalkerDB.getReadOnlyBtn ().setEnabled(Boolean.FALSE);
 
-                    StalkerDB.getDuplicatesLbl().setText("Duplicates");
+//                    StalkerDB.getDuplicatesLbl().setText("Duplicates");
 
                     break;
 
@@ -297,7 +343,8 @@ public interface Constants {
                     StalkerDB.getFrontEditBtn().setEnabled (Boolean.FALSE);
                     StalkerDB.getUploadBtn().setEnabled(Boolean.TRUE);
                     StalkerDB.getTodayBtn().setEnabled(Boolean.TRUE);
-
+                    StalkerDB.getReadOnlyBtn ().setEnabled(Boolean.FALSE);
+                    
                     break;
 
                 default:
@@ -330,10 +377,12 @@ public interface Constants {
             return NEW_ENTRY_MODE;
         }
     }
+    //</editor-fold>
 
     /**
      * A collection of GUI object references
      */
+    //<editor-fold defaultstate="collapsed" desc="enum VALIDATION">
     enum VALIDATION {
 
         REGISTRATION("REGISTRATION",
@@ -394,6 +443,11 @@ public interface Constants {
         TODAY ("UPLOAD IMAGE",
               "",
               StalkerDB.getTodayBtn(),
+              ""),
+        
+        TYPE ("VEHICLE TYPE",
+              "",
+              StalkerDB.getVehicleTypeCombo (),
               "");
 
         private final String NAME;
@@ -502,16 +556,24 @@ public interface Constants {
 
                         fields.getSwingField().setBorder(BorderFactory.createLineBorder(Color.green));
 
+                        /*
+                         * Checkbox is special case because it does not have aborder
+                         * but it does have a constant text heading.
+                         */
                         if (fields.getSwingField() instanceof JCheckBox) {
 
-                            ((JCheckBox)fields.getSwingField()).setForeground(Color.green);
+                            ((JCheckBox)fields.getSwingField()).setForeground ( Color.green );
                         }
                     }
                     else {
 
                         fields.getSwingField().setBorder(BorderFactory.createLineBorder(Color.black));
 
-                        if (fields.getSwingField() instanceof JCheckBox) {
+                        /*
+                         * Checkbox is special case because it does not have aborder.
+                         * but it does have a constant text heading.
+                         */
+                        if ( fields.getSwingField() instanceof JCheckBox ) {
 
                             ((JCheckBox)fields.getSwingField()).setForeground(new java.awt.Color(187, 187, 187));
                         }
@@ -540,4 +602,5 @@ public interface Constants {
             return MESSAGE;
         }
     }
+    //</editor-fold>
 }
