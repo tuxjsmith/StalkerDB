@@ -54,23 +54,35 @@ public class EncodeDecodeImage {
      * @param absolutePath - String
      */
     //<editor-fold defaultstate="collapsed" desc="static encodeFile">
-    public static void encodeFile (String absolutePath) {
+    public static boolean encodeFile (String absolutePath) {
 
         try {
         
-            bi = ImageIO.read(new File(absolutePath));
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bi, "png", baos);
-            byte[] bytes = baos.toByteArray();
-
-            // encode with padding
-            setMimeString ( Base64.getUrlEncoder().encodeToString( bytes ) );
-        } 
-        catch (IOException ex) {
+            bi = ImageIO.read ( new File ( absolutePath ) );
             
-            System.err.println ( ex.getMessage() );
+            ByteArrayOutputStream baos = new ByteArrayOutputStream ( );
+            
+            if (ImageIO.write ( bi, "png", baos )) {
+                
+                byte[] bytes = baos.toByteArray ( );
+                
+                // encode with padding
+                setMimeString ( Base64.getUrlEncoder ().encodeToString ( bytes ) );
+            }
+        } 
+        catch (Exception ex) {
+            
+            System.err.println ( "Upload image error: " + ex.getMessage () );
+            
+            /*
+             * TODO: "no image" WILL BE A CONSTANT.
+             */
+            setMimeString ( "no image" );
+            
+            return false;
         }
+        
+        return true;
     }
     //</editor-fold>
    

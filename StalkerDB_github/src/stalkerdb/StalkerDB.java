@@ -35,7 +35,6 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyVetoException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -62,7 +61,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JViewport;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import static utilities.Constants.GLOBAL_NOTES.LOADED;
@@ -96,6 +94,8 @@ import utilities.EncodeDecodeImage;
  */
 public class StalkerDB extends javax.swing.JFrame {
 
+    private StringBuilder previousNotes_sb = new StringBuilder ();
+    
     /**
      * Creates new form NewJFrame
      */
@@ -148,7 +148,7 @@ public class StalkerDB extends javax.swing.JFrame {
         clipboardCopyPopup = new javax.swing.JPopupMenu();
         copyImage_imageItem = new javax.swing.JMenuItem();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        addEdit_pnl = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         reg_TF = new javax.swing.JTextField();
         make_TF = new javax.swing.JTextField();
@@ -163,8 +163,11 @@ public class StalkerDB extends javax.swing.JFrame {
         date_TF = new javax.swing.JTextField();
         today_BTN = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
         notesScrollPane = new javax.swing.JScrollPane();
         notes_TA = new javax.swing.JTextArea();
+        previousNotesScrollPane = new javax.swing.JScrollPane();
+        previousNotes_TA = new javax.swing.JTextArea();
         jPanel14 = new javax.swing.JPanel();
         videoFile_TF = new javax.swing.JTextField();
         uploadImage_btn = new javax.swing.JButton();
@@ -179,8 +182,8 @@ public class StalkerDB extends javax.swing.JFrame {
         clear_BTN = new javax.swing.JButton();
         editFront_BTN = new javax.swing.JButton();
         readOnly_BTN = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
+        dvla_pnl = new javax.swing.JPanel();
+        search_pnl = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         reg_lbl = new javax.swing.JLabel();
@@ -218,9 +221,31 @@ public class StalkerDB extends javax.swing.JFrame {
         search_BTN = new javax.swing.JButton();
         editSearch_BTN = new javax.swing.JButton();
         imagesDesktopPane = new javax.swing.JDesktopPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        globalNotes_scroll = new javax.swing.JScrollPane();
         globalNotesText = new javax.swing.JTextPane();
+        config_pnl = new javax.swing.JPanel();
+        names_pnl = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        values_pnl = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
+        jPopupMenu1.setDoubleBuffered(true);
+
+        saveGlobalNotes_menuItem.setDoubleBuffered(true);
         saveGlobalNotes_menuItem.setLabel("Save global notes");
         saveGlobalNotes_menuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -228,9 +253,12 @@ public class StalkerDB extends javax.swing.JFrame {
             }
         });
         jPopupMenu1.add(saveGlobalNotes_menuItem);
+
+        jSeparator1.setDoubleBuffered(true);
         jPopupMenu1.add(jSeparator1);
 
         insertDate_menuItem.setText("Insert date at cursor");
+        insertDate_menuItem.setDoubleBuffered(true);
         insertDate_menuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 insertDate_menuItemActionPerformed(evt);
@@ -238,7 +266,10 @@ public class StalkerDB extends javax.swing.JFrame {
         });
         jPopupMenu1.add(insertDate_menuItem);
 
+        clipboardCopyPopup.setDoubleBuffered(true);
+
         copyImage_imageItem.setText("Copy");
+        copyImage_imageItem.setDoubleBuffered(true);
         copyImage_imageItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 copyImage_imageItemActionPerformed(evt);
@@ -259,7 +290,7 @@ public class StalkerDB extends javax.swing.JFrame {
         jTabbedPane1.setDoubleBuffered(true);
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(483, 0));
 
-        jPanel1.setLayout(new java.awt.BorderLayout(0, 5));
+        addEdit_pnl.setLayout(new java.awt.BorderLayout(0, 5));
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Car registration and make", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(0, 153, 153))); // NOI18N
         jPanel10.setMinimumSize(new java.awt.Dimension(34, 100));
@@ -292,12 +323,13 @@ public class StalkerDB extends javax.swing.JFrame {
         crimeStoppers_CB.setDoubleBuffered(true);
         jPanel10.add(crimeStoppers_CB);
 
-        vehicleType_Combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dunno", "Police car", "Police van", "Saloon", "Estate", "SUV", "Bicycle", "Male", "Female" }));
+        vehicleType_Combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dunno", "Van", "Police car", "Police van", "Saloon", "Estate", "SUV", "Bicycle", "Caucasian male", "Caucasian female", "Not-Caucasian male", "Not-Caucasian female", "Motor cycle" }));
         vehicleType_Combo.setToolTipText("Type of thing.");
         vehicleType_Combo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        vehicleType_Combo.setDoubleBuffered(true);
         jPanel10.add(vehicleType_Combo);
 
-        jPanel1.add(jPanel10, java.awt.BorderLayout.NORTH);
+        addEdit_pnl.add(jPanel10, java.awt.BorderLayout.NORTH);
 
         jPanel3.setLayout(new java.awt.BorderLayout(0, 5));
 
@@ -331,8 +363,9 @@ public class StalkerDB extends javax.swing.JFrame {
         time_TF.setToolTipText("HH:MM:SS");
         time_TF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         time_TF.setDoubleBuffered(true);
-        time_TF.setMinimumSize(new java.awt.Dimension(130, 25));
-        time_TF.setPreferredSize(new java.awt.Dimension(130, 25));
+        time_TF.setMaximumSize(new java.awt.Dimension(130, 26));
+        time_TF.setMinimumSize(new java.awt.Dimension(130, 26));
+        time_TF.setPreferredSize(new java.awt.Dimension(130, 26));
         time_TF.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 time_TFKeyPressed(evt);
@@ -345,8 +378,9 @@ public class StalkerDB extends javax.swing.JFrame {
         date_TF.setToolTipText("YYYY-MM-DD");
         date_TF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         date_TF.setDoubleBuffered(true);
-        date_TF.setMinimumSize(new java.awt.Dimension(130, 25));
-        date_TF.setPreferredSize(new java.awt.Dimension(130, 25));
+        date_TF.setMaximumSize(new java.awt.Dimension(130, 26));
+        date_TF.setMinimumSize(new java.awt.Dimension(130, 26));
+        date_TF.setPreferredSize(new java.awt.Dimension(130, 26));
         date_TF.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 date_TFKeyPressed(evt);
@@ -357,6 +391,9 @@ public class StalkerDB extends javax.swing.JFrame {
         today_BTN.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         today_BTN.setText("Today");
         today_BTN.setDoubleBuffered(true);
+        today_BTN.setMaximumSize(new java.awt.Dimension(64, 31));
+        today_BTN.setMinimumSize(new java.awt.Dimension(64, 31));
+        today_BTN.setPreferredSize(new java.awt.Dimension(64, 31));
         today_BTN.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 today_BTNActionPerformed(evt);
@@ -371,12 +408,17 @@ public class StalkerDB extends javax.swing.JFrame {
         jPanel5.setToolTipText("");
         jPanel5.setLayout(new java.awt.BorderLayout(0, 5));
 
+        jSplitPane1.setDividerLocation(200);
+        jSplitPane1.setDividerSize(5);
+        jSplitPane1.setDoubleBuffered(true);
+
         notesScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Notes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(0, 153, 153))); // NOI18N
         notesScrollPane.setDoubleBuffered(true);
 
         notes_TA.setColumns(20);
         notes_TA.setLineWrap(true);
         notes_TA.setRows(5);
+        notes_TA.setTabSize(4);
         notes_TA.setText("None");
         notes_TA.setToolTipText("Free form text");
         notes_TA.setWrapStyleWord(true);
@@ -384,26 +426,45 @@ public class StalkerDB extends javax.swing.JFrame {
         notes_TA.setDoubleBuffered(true);
         notesScrollPane.setViewportView(notes_TA);
 
-        jPanel5.add(notesScrollPane, java.awt.BorderLayout.CENTER);
+        jSplitPane1.setLeftComponent(notesScrollPane);
 
-        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Video file and image", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(0, 153, 153))); // NOI18N
+        previousNotesScrollPane.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Associated notes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(0, 153, 153))); // NOI18N
+        previousNotesScrollPane.setDoubleBuffered(true);
+
+        previousNotes_TA.setEditable(false);
+        previousNotes_TA.setColumns(20);
+        previousNotes_TA.setLineWrap(true);
+        previousNotes_TA.setRows(5);
+        previousNotes_TA.setTabSize(4);
+        previousNotes_TA.setToolTipText("Previous 'notes' returned from a search.");
+        previousNotes_TA.setWrapStyleWord(true);
+        previousNotes_TA.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        previousNotes_TA.setDoubleBuffered(true);
+        previousNotesScrollPane.setViewportView(previousNotes_TA);
+
+        jSplitPane1.setRightComponent(previousNotesScrollPane);
+
+        jPanel5.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Video file path and upload images", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(0, 153, 153))); // NOI18N
         jPanel14.setMinimumSize(new java.awt.Dimension(24, 50));
         jPanel14.setPreferredSize(new java.awt.Dimension(89, 52));
         jPanel14.setLayout(new java.awt.BorderLayout(5, 0));
 
         videoFile_TF.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         videoFile_TF.setText("None");
-        videoFile_TF.setToolTipText("Name / path of the video file");
+        videoFile_TF.setToolTipText("Plain text, a path of a video file.");
         videoFile_TF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         videoFile_TF.setDoubleBuffered(true);
         jPanel14.add(videoFile_TF, java.awt.BorderLayout.CENTER);
 
         uploadImage_btn.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         uploadImage_btn.setText("Upload Image");
+        uploadImage_btn.setToolTipText("Upload an image.");
         uploadImage_btn.setDoubleBuffered(true);
-        uploadImage_btn.setMaximumSize(new java.awt.Dimension(130, 31));
-        uploadImage_btn.setMinimumSize(new java.awt.Dimension(130, 31));
-        uploadImage_btn.setPreferredSize(new java.awt.Dimension(130, 31));
+        uploadImage_btn.setMaximumSize(new java.awt.Dimension(130, 30));
+        uploadImage_btn.setMinimumSize(new java.awt.Dimension(130, 30));
+        uploadImage_btn.setPreferredSize(new java.awt.Dimension(130, 30));
         uploadImage_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uploadImage_btnActionPerformed(evt);
@@ -454,7 +515,7 @@ public class StalkerDB extends javax.swing.JFrame {
 
         jPanel3.add(jPanel5, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        addEdit_pnl.add(jPanel3, java.awt.BorderLayout.CENTER);
 
         jPanel7.setMinimumSize(new java.awt.Dimension(426, 50));
         jPanel7.setPreferredSize(new java.awt.Dimension(475, 60));
@@ -489,7 +550,7 @@ public class StalkerDB extends javax.swing.JFrame {
         jPanel7.add(delete_BTN);
 
         clear_BTN.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        clear_BTN.setText("Clear");
+        clear_BTN.setText("<html><body><center>Clear / New</center></body></html>");
         clear_BTN.setToolTipText("Clear all fields.");
         clear_BTN.setDoubleBuffered(true);
         clear_BTN.setMinimumSize(new java.awt.Dimension(100, 31));
@@ -515,6 +576,7 @@ public class StalkerDB extends javax.swing.JFrame {
 
         readOnly_BTN.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         readOnly_BTN.setText("<html><body style=\"text-align:center;\">Read only</body></html>");
+        readOnly_BTN.setDoubleBuffered(true);
         readOnly_BTN.setEnabled(false);
         readOnly_BTN.setPreferredSize(new java.awt.Dimension(80, 40));
         readOnly_BTN.addActionListener(new java.awt.event.ActionListener() {
@@ -524,15 +586,15 @@ public class StalkerDB extends javax.swing.JFrame {
         });
         jPanel7.add(readOnly_BTN);
 
-        jPanel1.add(jPanel7, java.awt.BorderLayout.SOUTH);
+        addEdit_pnl.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
-        jTabbedPane1.addTab("Add / Edit", jPanel1);
+        jTabbedPane1.addTab("Add / Edit", addEdit_pnl);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("DVLA", jPanel2);
+        dvla_pnl.setLayout(new java.awt.BorderLayout());
+        jTabbedPane1.addTab("DVLA", dvla_pnl);
 
-        jPanel8.setPreferredSize(new java.awt.Dimension(453, 0));
-        jPanel8.setLayout(new java.awt.BorderLayout());
+        search_pnl.setPreferredSize(new java.awt.Dimension(453, 0));
+        search_pnl.setLayout(new java.awt.BorderLayout());
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Registration, Location, Date", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 12), new java.awt.Color(0, 153, 153))); // NOI18N
         jPanel9.setPreferredSize(new java.awt.Dimension(10, 300));
@@ -578,6 +640,7 @@ public class StalkerDB extends javax.swing.JFrame {
         jPanel11.add(notes_lbl);
 
         type_lbl.setText("Vehicle Type");
+        type_lbl.setDoubleBuffered(true);
         jPanel11.add(type_lbl);
 
         crimeStoppers_lbl.setText("Crime Stoppers");
@@ -612,7 +675,8 @@ public class StalkerDB extends javax.swing.JFrame {
         notesSearch_TF.setDoubleBuffered(true);
         jPanel12.add(notesSearch_TF);
 
-        vehicleTypeSearch_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dunno", "Police car", "Police van", "Saloon", "Estate", "SUV", "Bicycle", "Male", "Female" }));
+        vehicleTypeSearch_combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dunno", "Van", "Police car", "Police van", "Saloon", "Estate", "SUV", "Bicycle", "Caucasian male", "Caucasian female", "Not-Caucasian male", "Not-Caucasian female", "Motor cycle" }));
+        vehicleTypeSearch_combo.setDoubleBuffered(true);
         jPanel12.add(vehicleTypeSearch_combo);
 
         jPanel9.add(jPanel12, java.awt.BorderLayout.CENTER);
@@ -684,6 +748,7 @@ public class StalkerDB extends javax.swing.JFrame {
         jPanel17.add(notes_RB);
 
         searchCriteria.add(vehicleType_rb);
+        vehicleType_rb.setDoubleBuffered(true);
         jPanel17.add(vehicleType_rb);
 
         searchCriteria.add(crimeStoppers_rb);
@@ -697,7 +762,7 @@ public class StalkerDB extends javax.swing.JFrame {
 
         jPanel9.add(jPanel17, java.awt.BorderLayout.LINE_END);
 
-        jPanel8.add(jPanel9, java.awt.BorderLayout.PAGE_START);
+        search_pnl.add(jPanel9, java.awt.BorderLayout.PAGE_START);
 
         jPanel15.setLayout(new java.awt.BorderLayout());
 
@@ -764,20 +829,106 @@ public class StalkerDB extends javax.swing.JFrame {
 
         jPanel15.add(jPanel16, java.awt.BorderLayout.PAGE_END);
 
-        jPanel8.add(jPanel15, java.awt.BorderLayout.CENTER);
+        search_pnl.add(jPanel15, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Search", jPanel8);
+        jTabbedPane1.addTab("Search", search_pnl);
 
         imagesDesktopPane.setDoubleBuffered(true);
         jTabbedPane1.addTab("Images", imagesDesktopPane);
 
-        jScrollPane3.setDoubleBuffered(true);
+        globalNotes_scroll.setDoubleBuffered(true);
 
         globalNotesText.setComponentPopupMenu(jPopupMenu1);
         globalNotesText.setDoubleBuffered(true);
-        jScrollPane3.setViewportView(globalNotesText);
+        globalNotes_scroll.setViewportView(globalNotesText);
 
-        jTabbedPane1.addTab("Global notes", jScrollPane3);
+        jTabbedPane1.addTab("Global notes", globalNotes_scroll);
+
+        config_pnl.setLayout(new java.awt.BorderLayout());
+
+        names_pnl.setMinimumSize(new java.awt.Dimension(300, 10));
+        names_pnl.setPreferredSize(new java.awt.Dimension(150, 10));
+        names_pnl.setLayout(new java.awt.GridLayout(15, 0));
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Image pool dir:");
+        jLabel1.setToolTipText("Location to look when adding images to this database.");
+        names_pnl.add(jLabel1);
+
+        jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("unsued");
+        names_pnl.add(jLabel2);
+
+        jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("unused");
+        names_pnl.add(jLabel3);
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("unused");
+        names_pnl.add(jLabel4);
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("unused");
+        names_pnl.add(jLabel5);
+
+        jLabel6.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("unused");
+        names_pnl.add(jLabel6);
+
+        jLabel7.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("unused");
+        names_pnl.add(jLabel7);
+
+        config_pnl.add(names_pnl, java.awt.BorderLayout.WEST);
+
+        values_pnl.setLayout(new java.awt.GridLayout(15, 0));
+
+        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField1.setText("NOTE: CURRENTLY NOT IMPLEMENTED.");
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        values_pnl.add(jTextField1);
+
+        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        values_pnl.add(jTextField2);
+
+        jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        values_pnl.add(jTextField3);
+
+        jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        values_pnl.add(jTextField4);
+
+        jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        values_pnl.add(jTextField5);
+
+        jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        values_pnl.add(jTextField6);
+
+        jTextField7.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        values_pnl.add(jTextField7);
+
+        config_pnl.add(values_pnl, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setMinimumSize(new java.awt.Dimension(10, 50));
+        jPanel1.setPreferredSize(new java.awt.Dimension(10, 50));
+
+        jButton1.setText("Save configuration");
+        jButton1.setPreferredSize(new java.awt.Dimension(143, 35));
+        jPanel1.add(jButton1);
+
+        config_pnl.add(jPanel1, java.awt.BorderLayout.PAGE_END);
+
+        jTabbedPane1.addTab("Configuration", config_pnl);
 
         getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
@@ -970,6 +1121,11 @@ public class StalkerDB extends javax.swing.JFrame {
         return readOnly_BTN;
     }
     //</editor-fold>
+    
+    public static JTextArea getPreviousNotesTa () {
+        
+        return previousNotes_TA;
+    }
 
     /**
      * static getCrimeStoppersCb
@@ -1028,7 +1184,20 @@ public class StalkerDB extends javax.swing.JFrame {
     //<editor-fold defaultstate="collapsed" desc="Save button actionPerformed.">
     private void save_BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_BTNActionPerformed
 
-        new Save ().start ();
+        saveData ();
+        
+//        Save save = new Save ();
+        
+//        save.start ();
+//        
+//        try {
+//            
+//            save.join ();
+//        } 
+//        catch ( InterruptedException ex ) {
+//            
+//            System.err.println ( ex.getMessage () );
+//        }
     }//GEN-LAST:event_save_BTNActionPerformed
     //</editor-fold>
     
@@ -1039,23 +1208,31 @@ public class StalkerDB extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="clear_BTNActionPerformed">
     private void clear_BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clear_BTNActionPerformed
 
-        STATE.CLEARED.activate();
+        if ( javax.swing.JOptionPane.showConfirmDialog ( 
+                this,
+                "Confirm clear, all fields will be cleared.",
+                "Are you sure ?",
+                javax.swing.JOptionPane.YES_NO_OPTION ) == javax.swing.JOptionPane.YES_OPTION ) {
+
         
-        setTitleState ();
-
-        for (VALIDATION validate : VALIDATION.values()) {
-
-            validate.resetValid();
+            STATE.CLEARED.activate();
+            
+            setTitleState ();
+            
+            for (VALIDATION validate : VALIDATION.values()) {
+                
+                validate.resetValid();
+            }
+            
+            defaultFieldValues();
+            
+            reg_TF.grabFocus();
+            
+            saveDeleteError_LBL.setText("<html><body style=\"color:#bbbbbb;\">Cleared</body></html>");
+            saveDeleteError_LBL.setToolTipText("<html><body style=\"color:#bbbbbb;\">Fields cleared</body></html>");
+            
+            Flashing.startFlashing(saveDeleteError_LBL);
         }
-
-        defaultFieldValues();
-
-        reg_TF.grabFocus();
-
-        saveDeleteError_LBL.setText("<html><body style=\"color:#bbbbbb;\">Cleared</body></html>");
-        saveDeleteError_LBL.setToolTipText("<html><body style=\"color:#bbbbbb;\">Fields cleared</body></html>");
-
-        Flashing.startFlashing(saveDeleteError_LBL);
     }//GEN-LAST:event_clear_BTNActionPerformed
     //</editor-fold>
     
@@ -1119,6 +1296,8 @@ public class StalkerDB extends javax.swing.JFrame {
     //<editor-fold defaultstate="collapsed" desc="Search button actionPerformed.">
     private void search_BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_BTNActionPerformed
 
+        previousNotes_sb = new StringBuilder ();
+        
         clearTable();
         
         new Search ().start ();
@@ -1169,6 +1348,7 @@ public class StalkerDB extends javax.swing.JFrame {
             setTitleState ();
 
             final String ID = 
+                    
                     searchResultsTable.getModel().getValueAt(
                             searchResultsTable.getSelectedRow(),
                             0).toString();
@@ -1196,8 +1376,10 @@ public class StalkerDB extends javax.swing.JFrame {
                     (SEARCH_DB_RETURN_VALUES_HM.get(ID).split("crimeStoppers:")[1].equals("0")
                     ? Boolean.TRUE : Boolean.FALSE));
             vehicleType_Combo.setSelectedItem ( SEARCH_DB_RETURN_VALUES_HM.get(ID).split("type:")[1].split(":~:")[0] ); 
-            
+//            System.out.println ( SEARCH_DB_RETURN_VALUES_HM.get(ID).contains ( "previousNotes:" ) ) ;
             id_LBL.setText(EDIT_ID_RETURN_OBJECT.getMessage());
+            
+            previousNotes_TA.setText ( previousNotes_sb.toString () ); 
 
             for (VALIDATION validate : VALIDATION.values()) {
 
@@ -1278,6 +1460,12 @@ public class StalkerDB extends javax.swing.JFrame {
                     "StalkerDB Client");
             PHP_CONNECTION.setRequestMethod(httpMethod.getHttpMethodString());
             
+            /*
+             * TODO: WHY NOT ?
+             *
+             * PHP_CONNECTION.setDoInput(doInput_b);
+             * PHP_CONNECTION.setDoOutput(doOutput_b);
+             */
             if (doOutput_b) {
             
                 PHP_CONNECTION.setDoOutput(true);
@@ -1303,7 +1491,8 @@ public class StalkerDB extends javax.swing.JFrame {
                 proper headers and send it.
              */
             PHP_CONNECTION.setFixedLengthStreamingMode(length);
-            PHP_CONNECTION.setRequestProperty("Content-Type",
+            PHP_CONNECTION.setRequestProperty(
+                    "Content-Type",
                     "application/x-www-form-urlencoded; charset=UTF-8");
             PHP_CONNECTION.connect();
 
@@ -1324,6 +1513,8 @@ public class StalkerDB extends javax.swing.JFrame {
             try (BufferedReader bufferedReader
                     = new BufferedReader(new InputStreamReader(PHP_CONNECTION.getInputStream(), "UTF-8"))) {
 
+                previousNotes_sb = new StringBuilder ();
+                
                 String line;
                 
                 switch (returnType) {
@@ -1333,6 +1524,24 @@ public class StalkerDB extends javax.swing.JFrame {
                         SEARCH_DB_RETURN_VALUES_HM.clear();
 
                         while ((line = bufferedReader.readLine()) != null) {
+                            
+                            previousNotes_sb.append ( "DATE: ");
+                            previousNotes_sb.append ( line.split("date:")[1].split(":~:")[0].trim () );
+                            previousNotes_sb.append ( System.getProperty ( "line.separator" ) ); 
+                            previousNotes_sb.append ( "LOCATION: " );
+                            previousNotes_sb.append ( line.split("location:")[1].split(":~:")[0].trim () );
+                            previousNotes_sb.append ( System.getProperty ( "line.separator" ) ); 
+                            previousNotes_sb.append ( "REG: " );
+                            previousNotes_sb.append ( line.split("reg:")[1].split(":~:")[0].trim () );
+                            previousNotes_sb.append ( System.getProperty ( "line.separator" ) ); 
+                            previousNotes_sb.append ( "NOTES: " );
+                            previousNotes_sb.append ( System.getProperty ( "line.separator" ) );
+                            previousNotes_sb.append ( line.split("notes:")[1].split(":~:")[0].trim ().replaceAll ("--linebreak--", System.getProperty ( "line.separator" ) ) );
+                            previousNotes_sb.append ( System.getProperty ( "line.separator" ) );
+                            previousNotes_sb.append ( System.getProperty ( "line.separator" ) );
+                            previousNotes_sb.append ( "---" );
+                            previousNotes_sb.append ( System.getProperty ( "line.separator" ) );
+                            previousNotes_sb.append ( System.getProperty ( "line.separator" ) );
                             
                             /*
                              * Un-comment to see all php is echos.
@@ -1438,7 +1647,7 @@ public class StalkerDB extends javax.swing.JFrame {
                              */
 
                             JScrollPane jScrollPane1 = new JScrollPane ();
-                            
+                            //
                             jScrollPane1.setBackground(new java.awt.Color(255, 255, 153));
                             jScrollPane1.setDoubleBuffered(true);
                             jScrollPane1.setOpaque(false);
@@ -1461,7 +1670,7 @@ public class StalkerDB extends javax.swing.JFrame {
                                     50 + ( counter * 10 ), 
                                     II.getIconWidth () + 30, 
                                     II.getIconHeight () + 40 );
-                            jScrollPane1.setComponentPopupMenu (clipboardCopyPopup );
+                            jScrollPane1.setComponentPopupMenu ( clipboardCopyPopup );
 
                             imagesDesktopPane.add ( foo );
 
@@ -1740,7 +1949,7 @@ public class StalkerDB extends javax.swing.JFrame {
         javax.swing.JFileChooser chooseFile = new javax.swing.JFileChooser();
         
         FileNameExtensionFilter filter = 
-                new FileNameExtensionFilter( "PNG Images", "png" );
+                new FileNameExtensionFilter( "Images: png, jpg", "png", "jpg", "JPEG" );
         
         chooseFile.setFileFilter(filter);
         
@@ -1756,16 +1965,21 @@ public class StalkerDB extends javax.swing.JFrame {
         
         if (returnVal == javax.swing.JFileChooser.APPROVE_OPTION) {
 
-//            System.out.println( chooseFile.getSelectedFile().getAbsolutePath() );
-
-            EncodeDecodeImage.encodeFile ( chooseFile.getSelectedFile().getAbsolutePath() );
+            if (!EncodeDecodeImage.encodeFile ( chooseFile.getSelectedFile().getAbsolutePath() ) ) {
+                
+                JOptionPane.showMessageDialog ( 
+                        this, 
+                        chooseFile.getSelectedFile().getAbsolutePath()
+                                + "\ndoes not seem to be an image file.", "Not an image.", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
 
             /*
-                 * Testing whether the encoded image can be decoded back into a file. 
+             * Testing whether the encoded image can be decoded back into a file. 
              */
 //            EncodeDecodeImage.toImage("/home/john/temp/image.png");
             /*
-                 * End testing.
+             * End testing.
              */
         }
     }//GEN-LAST:event_uploadImage_btnActionPerformed
@@ -1878,23 +2092,30 @@ public class StalkerDB extends javax.swing.JFrame {
         /*
          * We reset all values to their original when this button is clicked.
          */
-        reg_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "reg:" )[ 1 ].split ( ":~:" )[ 0 ] );
-        date_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "date:" )[ 1 ].split ( ":~:" )[ 0 ].split ( " " )[ 0 ] );
-        time_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "date:" )[ 1 ].split ( ":~:" )[ 0 ].split ( " " )[ 1 ] );
-        videoFile_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "fileName:" )[ 1 ].split ( ":~:" )[ 0 ] );
-        make_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "make:" )[ 1 ].split ( ":~:" )[ 0 ] );
-        notes_TA.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "notes:" )[ 1 ].split ( ":~:" )[ 0 ].replace ( "--linebreak--", System.getProperty ( "line.separator" ) ) );
-        location_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "location:" )[ 1 ].split ( ":~:" )[ 0 ] );
-        crimeStoppers_CB.setSelected (
-                ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "crimeStoppers:" )[ 1 ].equals ( "0" )
-                ? Boolean.TRUE : Boolean.FALSE ) );
-        vehicleType_Combo.setSelectedItem ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "type:" )[ 1 ].split ( ":~:" )[ 0 ] );
-
-        id_LBL.setText ( EDIT_ID_RETURN_OBJECT.getMessage () );
+        if ( SEARCH_DB_RETURN_VALUES_HM.containsKey ( EDIT_ID_RETURN_OBJECT.getMessage () ) ) {
+            
+            reg_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "reg:" )[ 1 ].split ( ":~:" )[ 0 ] );
+            date_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "date:" )[ 1 ].split ( ":~:" )[ 0 ].split ( " " )[ 0 ] );
+            time_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "date:" )[ 1 ].split ( ":~:" )[ 0 ].split ( " " )[ 1 ] );
+            videoFile_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "fileName:" )[ 1 ].split ( ":~:" )[ 0 ] );
+            make_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "make:" )[ 1 ].split ( ":~:" )[ 0 ] );
+            notes_TA.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "notes:" )[ 1 ].split ( ":~:" )[ 0 ].replace ( "--linebreak--", System.getProperty ( "line.separator" ) ) );
+            location_TF.setText ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "location:" )[ 1 ].split ( ":~:" )[ 0 ] );
+            crimeStoppers_CB.setSelected (
+                    ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "crimeStoppers:" )[ 1 ].equals ( "0" )
+                            ? Boolean.TRUE : Boolean.FALSE ) );
+            id_LBL.setText ( EDIT_ID_RETURN_OBJECT.getMessage () );
+        
+            vehicleType_Combo.setSelectedItem ( SEARCH_DB_RETURN_VALUES_HM.get ( EDIT_ID_RETURN_OBJECT.getMessage () ).split ( "type:" )[ 1 ].split ( ":~:" )[ 0 ] );
+        }
         
         saveDeleteError_LBL.setText("<html><body style=\"color:#bbbbbb;\">Read only</body></html>");
         saveDeleteError_LBL.setToolTipText("<html><body style=\"color:#bbbbbb;\">Editable but save not allowed</body></html>");
     }//GEN-LAST:event_readOnly_BTNActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
     //</editor-fold>
     
     /**
@@ -1930,8 +2151,10 @@ public class StalkerDB extends javax.swing.JFrame {
 
     //<editor-fold defaultstate="collapsed" desc="Swing variables">
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel addEdit_pnl;
     private javax.swing.JButton clear_BTN;
     private javax.swing.JPopupMenu clipboardCopyPopup;
+    private javax.swing.JPanel config_pnl;
     private javax.swing.JMenuItem copyImage_imageItem;
     private javax.swing.JLabel count_LBL;
     private static javax.swing.JCheckBox crimeStoppers_CB;
@@ -1943,14 +2166,24 @@ public class StalkerDB extends javax.swing.JFrame {
     private javax.swing.JLabel date_lbl;
     private static javax.swing.JButton delete_BTN;
     private static javax.swing.JLabel duplicates_LBL;
+    private javax.swing.JPanel dvla_pnl;
     private static javax.swing.JButton editFront_BTN;
     private static javax.swing.JButton editSearch_BTN;
     private javax.swing.JRadioButton file_RB;
     private javax.swing.JLabel file_lbl;
     private javax.swing.JTextPane globalNotesText;
+    private javax.swing.JScrollPane globalNotes_scroll;
     private static javax.swing.JLabel id_LBL;
     private javax.swing.JDesktopPane imagesDesktopPane;
     private javax.swing.JMenuItem insertDate_menuItem;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1961,19 +2194,24 @@ public class StalkerDB extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JLabel loc_lbl;
     private javax.swing.JTextField locationSearch_TF;
     private javax.swing.JRadioButton location_RB;
@@ -1982,11 +2220,14 @@ public class StalkerDB extends javax.swing.JFrame {
     private javax.swing.JRadioButton make_RB;
     private static javax.swing.JTextField make_TF;
     private javax.swing.JLabel make_lbl;
+    private javax.swing.JPanel names_pnl;
     private javax.swing.JScrollPane notesScrollPane;
     private javax.swing.JTextField notesSearch_TF;
     private javax.swing.JRadioButton notes_RB;
     private static javax.swing.JTextArea notes_TA;
     private javax.swing.JLabel notes_lbl;
+    private javax.swing.JScrollPane previousNotesScrollPane;
+    private static javax.swing.JTextArea previousNotes_TA;
     private static javax.swing.JButton readOnly_BTN;
     private javax.swing.JTextField regSearch_TF;
     private javax.swing.JRadioButton reg_RB;
@@ -1998,6 +2239,7 @@ public class StalkerDB extends javax.swing.JFrame {
     private javax.swing.ButtonGroup searchCriteria;
     private javax.swing.JTable searchResultsTable;
     private static javax.swing.JButton search_BTN;
+    private javax.swing.JPanel search_pnl;
     private javax.swing.JTextField timeSearch_TF;
     private javax.swing.JRadioButton time_RB;
     private static javax.swing.JTextField time_TF;
@@ -2005,6 +2247,7 @@ public class StalkerDB extends javax.swing.JFrame {
     private static javax.swing.JButton today_BTN;
     private javax.swing.JLabel type_lbl;
     private static javax.swing.JButton uploadImage_btn;
+    private javax.swing.JPanel values_pnl;
     private javax.swing.JComboBox<String> vehicleTypeSearch_combo;
     private static javax.swing.JComboBox<String> vehicleType_Combo;
     private javax.swing.JRadioButton vehicleType_rb;
@@ -2017,11 +2260,15 @@ public class StalkerDB extends javax.swing.JFrame {
      * A threaded class that sends all values to the database via PHP.
      */
     //<editor-fold defaultstate="collapsed" desc="Save class">
-    public class Save extends Thread {
+//    public class Save extends Thread {
 
-        @Override
-        public void run () {
+//    public class Save {
+        
+//        @Override
+//        public void run () {
 
+        public void saveData () {
+            
             /*
              * DONE: EDIT_MODE needs return values that can be added to the status bar.
              * DONE: if EDIT_MODE then update the database else if NEW_ENTRY_MODE then insert.
@@ -2083,7 +2330,12 @@ public class StalkerDB extends javax.swing.JFrame {
                  * Alphanumeric only.
                  */
                 ARGUMENTS.put ( "reg", reg_TF.getText ().replaceAll ( " ", "" ).toUpperCase () );
-
+                
+                /*
+                 * Refreshing field.
+                 */
+                reg_TF.setText ( reg_TF.getText ().replaceAll ( " ", "" ).toUpperCase () );
+                
                 /*
                  * 2 numbers, slash, 2 numbers, slash, 4 numbers.
                  */
@@ -2143,6 +2395,13 @@ public class StalkerDB extends javax.swing.JFrame {
                      * End label.
                      */
 
+                    JScrollPane jScrollPane1 = new JScrollPane ();
+                    //        
+                    jScrollPane1.setBackground(new java.awt.Color(255, 255, 153));
+                    jScrollPane1.setDoubleBuffered(true);
+                    jScrollPane1.setOpaque(false);
+                    jScrollPane1.setViewportView(fooLabel);
+                    
                     JInternalFrame foo = new JInternalFrame (
                             "#n",
                             Boolean.TRUE,
@@ -2153,9 +2412,9 @@ public class StalkerDB extends javax.swing.JFrame {
                     foo.setAutoscrolls ( true );
                     foo.setDoubleBuffered ( true );
                     foo.setVisible ( true );
-                    foo.getContentPane ().add ( fooLabel, java.awt.BorderLayout.CENTER );
+                    foo.getContentPane ().add ( jScrollPane1, java.awt.BorderLayout.CENTER );
                     foo.setBounds ( 50, 50, 320, 240 );
-                    foo.setComponentPopupMenu ( clipboardCopyPopup );
+                    jScrollPane1.setComponentPopupMenu ( clipboardCopyPopup );
 
                     imagesDesktopPane.add ( foo );
                 }
@@ -2176,8 +2435,10 @@ public class StalkerDB extends javax.swing.JFrame {
             EncodeDecodeImage.resetMimeString ();
 
             reg_TF.grabFocus ();
+            
+            reg_TF.setText ( reg_TF.getText ().toUpperCase () );
         }
-    }
+//    }
     //</editor-fold>
     
     /**
@@ -2250,7 +2511,7 @@ public class StalkerDB extends javax.swing.JFrame {
             search_BTN.setEnabled ( false ); 
 
             final String PHP_URL_S = "http://localhost/logFarm/PHP/StalkerDbPhp/search.php";
-
+            
             final Map<String, String> ARGUMENTS = new HashMap<> ();
 
             if ( reg_RB.isSelected () ) {

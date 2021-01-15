@@ -46,7 +46,7 @@ import static utilities.Constants.RETURN_OBJECT.VALIDATION_RETURN_OBJECT;
  */
 public interface Constants {
 
-    String VERSION = "0.81 (TODO: DVLA)";
+    String VERSION = "0.8.2 (TODO: DVLA, CONFIGURATION)";
     
     /*
      * Used by search and edit.
@@ -246,11 +246,16 @@ public interface Constants {
 
                 case READ_ONLY:
                     
-//                    for (VALIDATION field : VALIDATION.values()) {
-//
-//                        field.getSwingField().setEnabled (Boolean.FALSE);
-//                    }
-                    
+                    for (VALIDATION field : VALIDATION.values()) {
+
+                        field.getSwingField().setEnabled (Boolean.TRUE);
+                        
+                        if (field.getSwingField() instanceof javax.swing.text.JTextComponent) {
+                            
+                            ((javax.swing.text.JTextComponent)field.getSwingField()).setEditable ( Boolean.FALSE );
+                        }
+                    }
+
                     for ( VALIDATION validate : VALIDATION.values () ) {
 
                         validate.resetValid ();
@@ -261,6 +266,8 @@ public interface Constants {
                     StalkerDB.getFrontEditBtn().setEnabled (Boolean.TRUE);
                     StalkerDB.getUploadBtn().setEnabled(Boolean.FALSE);
                     StalkerDB.getTodayBtn().setEnabled(Boolean.FALSE);
+                    StalkerDB.getReadOnlyBtn ().setEnabled (Boolean.FALSE);
+                    
                     
                     break;
                 
@@ -285,6 +292,11 @@ public interface Constants {
                     for (VALIDATION field : VALIDATION.values()) {
 
                         field.getSwingField().setEnabled(Boolean.TRUE);
+                        
+                        if (field.getSwingField() instanceof javax.swing.text.JTextComponent) {
+                            
+                            ((javax.swing.text.JTextComponent)field.getSwingField()).setEditable ( Boolean.TRUE );
+                        }
                     }
 
                     StalkerDB.getDeleteBtn ().setEnabled (Boolean.TRUE);
@@ -313,6 +325,11 @@ public interface Constants {
                     for (VALIDATION field : VALIDATION.values()) {
 
                         field.getSwingField().setEnabled(Boolean.TRUE);
+                        
+                        if (field.getSwingField() instanceof javax.swing.text.JTextComponent) {
+                            
+                            ((javax.swing.text.JTextComponent)field.getSwingField()).setEditable ( Boolean.TRUE );
+                        }
                     }
 
                     StalkerDB.getDeleteBtn ().setEnabled (Boolean.FALSE);
@@ -336,6 +353,11 @@ public interface Constants {
                     for (VALIDATION field : VALIDATION.values()) {
 
                         field.getSwingField().setEnabled(Boolean.TRUE);
+                        
+                        if (field.getSwingField() instanceof javax.swing.text.JTextComponent) {
+                            
+                            ((javax.swing.text.JTextComponent)field.getSwingField()).setEditable ( Boolean.TRUE );
+                        }
                     }
 
                     StalkerDB.getDeleteBtn ().setEnabled (Boolean.FALSE);
@@ -344,6 +366,7 @@ public interface Constants {
                     StalkerDB.getUploadBtn().setEnabled(Boolean.TRUE);
                     StalkerDB.getTodayBtn().setEnabled(Boolean.TRUE);
                     StalkerDB.getReadOnlyBtn ().setEnabled(Boolean.FALSE);
+                    StalkerDB.getPreviousNotesTa ().setText ( "" ); 
                     
                     break;
 
@@ -352,6 +375,11 @@ public interface Constants {
                     for (VALIDATION field : VALIDATION.values()) {
 
                         field.getSwingField().setEnabled(Boolean.TRUE);
+                        
+                        if (field.getSwingField() instanceof javax.swing.text.JTextComponent) {
+                            
+                            ((javax.swing.text.JTextComponent)field.getSwingField()).setEditable ( Boolean.TRUE );
+                        }
                     }
 
                     StalkerDB.getDeleteBtn ().setEnabled (Boolean.FALSE);
@@ -359,6 +387,7 @@ public interface Constants {
                     StalkerDB.getFrontEditBtn().setEnabled (Boolean.FALSE);
                     StalkerDB.getUploadBtn().setEnabled(Boolean.TRUE);
                     StalkerDB.getTodayBtn().setEnabled(Boolean.TRUE);
+                    StalkerDB.getReadOnlyBtn ().setEnabled (Boolean.FALSE);
 
                     break;
             }
